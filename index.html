@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RO-Study Encouragement Widget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #191919;
+      --card-bg: #22252a;
+      --border-color: rgba(56, 189, 248, 0.2);
+      --accent-blue: #38bdf8;
+      --soft-blue: #7dd3fc;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text-main);
+      overflow: hidden;
+    }
+
+    .widget-container {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 28px 24px 22px;
+      width: 340px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      background-image: 
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.08), transparent 60%),
+        radial-gradient(circle at bottom left, rgba(30, 58, 138, 0.15), transparent 70%);
+    }
+
+    /* Math watermark symbols */
+    .math-watermark {
+      position: absolute;
+      color: rgba(56, 189, 248, 0.05);
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .tagline {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .message-box {
+      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .main-message {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      line-height: 1.4;
+      color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    .sub-message {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+      margin-bottom: 18px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: rgba(56, 189, 248, 0.06);
+      color: var(--soft-blue);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn:hover {
+      background: var(--accent-blue);
+      color: #0f172a;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(244, 63, 94, 0.2);
+      color: #fda4af;
+      border-color: rgba(244, 63, 94, 0.4);
+      box-shadow: 0 4px 14px rgba(244, 63, 94, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="widget-container">
+    <span class="math-watermark" style="top: 10px; left: 15px; font-size: 1.8rem;">&sum;</span>
+    <span class="math-watermark" style="bottom: 10px; right: 20px; font-size: 2rem;">&int;</span>
+    <span class="math-watermark" style="top: 40px; right: 15px; font-size: 1.2rem;">max z</span>
+
+    <div class="tagline">
+      <span>&bull;</span> RO-STUDY REMINDER <span>&bull;</span>
+    </div>
+
+    <div class="message-box">
+      <div class="main-message" id="mainMsg">You are doing your best.</div>
+      <div class="sub-message" id="subMsg">Trust the process &amp; step by step.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="actions" id="actionButtons">
+      <button class="btn" onclick="handleChoice('yes')">Yes, I am!</button>
+      <button class="btn btn-secondary" onclick="handleChoice('no')">I feel like I can't</button>
+    </div>
+  </div>
+
+  <script>
+    const positiveResponses = [
+      { main: "You can do it, girl!", sub: "Optimal solution lies ahead. Q.E.D. ∎" },
+      { main: "Trust the process.", sub: "Good things take time & effort." },
+      { main: "Big things are coming!", sub: "Keep building your path." }
+    ];
+
+    let choiceIndex = 0;
+
+    function handleChoice(type) {
+      const mainMsg = document.getElementById('mainMsg');
+      const subMsg = document.getElementById('subMsg');
+      const btnGroup = document.getElementById('actionButtons');
+
+      if (type === 'no') {
+        mainMsg.style.color = '#f43f5e';
+        mainMsg.textContent = "Giving up isn't an option!";
+        subMsg.textContent = "Take a deep breath. You're stronger than this obstacle.";
+        
+        btnGroup.innerHTML = `
+          <button class="btn" style="width:100%" onclick="resetWidget()">Let's try again 💪</button>
+        `;
+      } else {
+        const current = positiveResponses[choiceIndex % positiveResponses.length];
+        choiceIndex++;
+        
+        mainMsg.style.color = '#38bdf8';
+        mainMsg.textContent = current.main;
+        subMsg.textContent = current.sub;
+
+        btnGroup.innerHTML = `
+          <button class="btn" style="width:100%" onclick="resetWidget()">Keep Going ✨</button>
+        `;
+      }
+    }
+
+    function resetWidget() {
+      const mainMsg = document.getElementById('mainMsg');
+      const subMsg = document.getElementById('subMsg');
+      const btnGroup = document.getElementById('actionButtons');
+
+      mainMsg.style.color = '#ffffff';
+      mainMsg.textContent = "You are doing your best.";
+      subMsg.textContent = "Trust the process & step by step.";
+
+      btnGroup.innerHTML = `
+        <button class="btn" onclick="handleChoice('yes')">Yes, I am!</button>
+        <button class="btn btn-secondary" onclick="handleChoice('no')">I feel like I can't</button>
+      `;
+    }
+  </script>
+
+</body>
+</html>
